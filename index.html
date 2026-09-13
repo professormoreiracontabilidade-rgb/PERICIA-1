@@ -6,25 +6,25 @@
 <meta name="theme-color" content="#dff4ff">
 <title>Perícia Contábil — Professor Moreira</title>
 <style>
-  *{box-sizing:border-box}
-  html,body{margin:0;min-height:100%;background:#dff4ff;font-family:Arial,Helvetica,sans-serif}
-  body{min-height:100dvh;display:flex;align-items:center;justify-content:center;overscroll-behavior:none}
-  .app{width:min(100%,520px);min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:10px 10px max(12px,env(safe-area-inset-bottom))}
-  .stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;flex:1;touch-action:pan-y}
-  #slide{display:block;max-width:100%;max-height:calc(100dvh - 105px);width:auto;height:auto;object-fit:contain;border-radius:14px;box-shadow:0 5px 18px rgba(0,0,0,.18);user-select:none;-webkit-user-drag:none}
-  .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:rgba(0,67,117,.82);color:#fff;font-size:30px;line-height:44px;display:grid;place-items:center;cursor:pointer}
-  .prev{left:5px}.next{right:5px}
-  .bar{display:flex;align-items:center;justify-content:center;gap:12px;padding-top:10px}
-  .count{min-width:72px;text-align:center;font-size:18px;font-weight:700;color:#073e68}
-  .reset{border:0;border-radius:12px;background:#b51f2e;color:#fff;padding:10px 16px;font-size:16px;font-weight:700;cursor:pointer}
-  button:active{transform:scale(.97)}
-  @media(max-width:380px){.nav{width:40px;height:40px;font-size:26px}.app{padding-left:6px;padding-right:6px}}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#dff4ff;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.app{width:min(100%,520px);height:100dvh;display:flex;flex-direction:column;padding:8px 8px max(10px,env(safe-area-inset-bottom))}
+.stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+#slide{display:block;max-width:100%;max-height:calc(100dvh - 78px);width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.16);user-select:none;-webkit-user-drag:none}
+.nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:44px;height:44px;border:0;border-radius:50%;background:rgba(0,67,117,.84);color:#fff;font-size:30px;cursor:pointer;display:grid;place-items:center}
+.prev{left:6px}.next{right:6px}
+.bar{height:60px;display:flex;align-items:center;justify-content:center;gap:14px;flex:none}
+.count{font-size:18px;font-weight:700;color:#073e68;min-width:62px;text-align:center}
+.reset{border:0;border-radius:12px;background:#c51f32;color:#fff;padding:10px 16px;font-size:16px;font-weight:700;cursor:pointer}
+button:active{transform:scale(.97)}
+.nav:active{transform:translateY(-50%) scale(.96)}
 </style>
 </head>
 <body>
-<main class="app" aria-label="Carrossel Perícia Contábil">
+<main class="app">
   <section class="stage" id="stage">
-    <img id="slide" src="imagens/01.webp" alt="Slide 1 de 6" draggable="false" decoding="async" fetchpriority="high">
+    <img id="slide" src="01.webp" alt="Slide 1 de 6" draggable="false" decoding="async" fetchpriority="high">
     <button class="nav prev" id="prev" aria-label="Imagem anterior">‹</button>
     <button class="nav next" id="next" aria-label="Próxima imagem">›</button>
   </section>
@@ -41,7 +41,9 @@
   const slide = document.getElementById('slide');
   const count = document.getElementById('count');
   const stage = document.getElementById('stage');
-  const path = n => `imagens/${String(n).padStart(2,'0')}.webp`;
+
+  // As imagens estão na MESMA pasta do index.html.
+  const path = n => `${String(n).padStart(2,'0')}.webp`;
 
   function preload(n){
     if(n < 1 || n > total) return;
@@ -73,7 +75,8 @@
   let startX = 0, startY = 0;
   stage.addEventListener('touchstart', e => {
     const t = e.changedTouches[0];
-    startX = t.clientX; startY = t.clientY;
+    startX = t.clientX;
+    startY = t.clientY;
   }, {passive:true});
 
   stage.addEventListener('touchend', e => {
